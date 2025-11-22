@@ -117,3 +117,47 @@ function searchCars(query, cars) {
         )
     );
 }
+
+// Добавьте эту функцию в main.js
+function initNavigation() {
+    // Определяем текущую страницу
+    const currentPath = window.location.pathname;
+    const navItems = document.querySelectorAll('.nav-item');
+
+    navItems.forEach(item => {
+        // Удаляем активный класс у всех элементов
+        item.classList.remove('active');
+
+        // Проверяем, соответствует ли пункт меню текущей странице
+        const pageUrl = item.getAttribute('onclick');
+        if (pageUrl && pageUrl.includes(currentPath)) {
+            item.classList.add('active');
+        }
+    });
+
+    // Особый случай для главной страницы
+    if (currentPath === '/' || currentPath === '/index') {
+        const homeItem = document.querySelector('.nav-item[onclick*="/"]');
+        if (homeItem && !homeItem.onclick.includes('/catalog') &&
+            !homeItem.onclick.includes('/cities') &&
+            !homeItem.onclick.includes('/service') &&
+            !homeItem.onclick.includes('/contacts')) {
+            homeItem.classList.add('active');
+        }
+    }
+}
+
+// Обновите функцию initApp
+function initApp() {
+    // Загрузка сохраненного города
+    loadSavedCity();
+
+    // Инициализация слушателей событий
+    initEventListeners();
+
+    // Инициализация навигации
+    initNavigation();
+
+    // Показ уведомления о загрузке
+    showWelcomeMessage();
+}

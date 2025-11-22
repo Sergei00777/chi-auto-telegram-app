@@ -43,9 +43,18 @@
         <h2 class="section-title">Популярные автомобили</h2>
         <div class="cars-grid">
             {% for car in featured_cars %}
-            <div class="car-card" onclick="openPage('/car/{{ car.id }}')">
+            <div class="car-card" onclick="openPage('/car/{{ loop.index0 }}')">
                 <div class="car-image">
-                    <img src="{{ url_for('static', filename='images/cars/' + car.images[0]) }}" alt="{{ car.name }}">
+                    {% if car.images and car.images[0] %}
+                        <img src="{{ url_for('static', filename='images/cars/' + car.images[0]) }}"
+                             alt="{{ car.name }}"
+                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMWUzYThhIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg=='">
+                    {% else %}
+                        <div class="car-image-placeholder">
+                            <i class='bx bx-car'></i>
+                            <span>Нет изображения</span>
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="car-info">
                     <h3>{{ car.name }}</h3>
@@ -58,8 +67,8 @@
                         {{ "{:,}".format(car.price).replace(",", " ") }} ₽
                     </div>
                 </div>
-                <div class="car-availability available">
-                    В наличии
+                <div class="car-availability {{ 'available' if car.available else 'unavailable' }}">
+                    {{ 'В наличии' if car.available else 'Нет в наличии' }}
                 </div>
             </div>
             {% endfor %}
@@ -99,4 +108,28 @@
         </div>
     </section>
 </div>
+
+<style>
+.car-image-placeholder {
+    width: 100%;
+    height: 180px;
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #bfdbfe;
+    border: 1px solid #3730a3;
+}
+
+.car-image-placeholder i {
+    font-size: 40px;
+    margin-bottom: 8px;
+}
+
+.car-image-placeholder span {
+    font-size: 14px;
+    color: #94a3b8;
+}
+</style>
 {% endblock %}
