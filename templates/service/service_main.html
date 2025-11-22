@@ -1,0 +1,425 @@
+{% extends "base.html" %}
+
+{% block title %}Сервис - CHI AUTO{% endblock %}
+
+{% block content %}
+<div class="service-page">
+    <header class="page-header">
+        <h1>Сервис CHI AUTO</h1>
+        <p class="page-subtitle">Профессиональное обслуживание вашего автомобиля</p>
+    </header>
+
+    <!-- Быстрый доступ -->
+    <section class="service-quick-actions">
+        <div class="actions-grid">
+            <div class="service-action-card" onclick="openPage('/service/booking')">
+                <div class="action-icon">
+                    <i class='bx bx-calendar-plus'></i>
+                </div>
+                <div class="action-content">
+                    <h3>Запись на ТО</h3>
+                    <p>Запланируйте техническое обслуживание</p>
+                </div>
+                <i class='bx bx-chevron-right action-arrow'></i>
+            </div>
+
+            <div class="service-action-card" onclick="openPage('/service/status')">
+                <div class="action-icon">
+                    <i class='bx bx-task'></i>
+                </div>
+                <div class="action-content">
+                    <h3>Статус ремонта</h3>
+                    <p>Отслеживайте ход работ</p>
+                </div>
+                <i class='bx bx-chevron-right action-arrow'></i>
+            </div>
+
+            <div class="service-action-card" onclick="showServiceInfo()">
+                <div class="action-icon">
+                    <i class='bx bx-info-circle'></i>
+                </div>
+                <div class="action-content">
+                    <h3>Услуги сервиса</h3>
+                    <p>Полный спектр услуг</p>
+                </div>
+                <i class='bx bx-chevron-right action-arrow'></i>
+            </div>
+
+            <div class="service-action-card" onclick="openContacts()">
+                <div class="action-icon">
+                    <i class='bx bx-phone'></i>
+                </div>
+                <div class="action-content">
+                    <h3>Контакты сервиса</h3>
+                    <p>Свяжитесь с нами</p>
+                </div>
+                <i class='bx bx-chevron-right action-arrow'></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Акции и предложения -->
+    <section class="service-promotions">
+        <h2 class="section-title">Специальные предложения</h2>
+        <div class="promotions-grid">
+            <div class="promotion-card">
+                <div class="promotion-badge">АКЦИЯ</div>
+                <div class="promotion-content">
+                    <h3>Комплексное ТО</h3>
+                    <p>Полное техническое обслуживание со скидкой 15%</p>
+                    <div class="promotion-price">
+                        <span class="old-price">25 000 ₽</span>
+                        <span class="new-price">21 250 ₽</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="promotion-card">
+                <div class="promotion-badge">НОВИНКА</div>
+                <div class="promotion-content">
+                    <h3>Диагностика ходовой</h3>
+                    <p>Бесплатная диагностика при любом ремонте</p>
+                    <div class="promotion-price">
+                        <span class="old-price">3 000 ₽</span>
+                        <span class="new-price">0 ₽</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Статистика сервиса -->
+    <section class="service-stats">
+        <h2 class="section-title">CHI AUTO в цифрах</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">500+</div>
+                <div class="stat-label">обслужено авто</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">15</div>
+                <div class="stat-label">профессионалов</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">поддержка</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">1 год</div>
+                <div class="stat-label">гарантия на работы</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Частые вопросы -->
+    <section class="service-faq">
+        <h2 class="section-title">Частые вопросы</h2>
+        <div class="faq-list">
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    <span>Как записаться на сервис?</span>
+                    <i class='bx bx-chevron-down'></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Вы можете записаться через это приложение, по телефону или посетив наш сервисный центр. Онлайн-запись доступна 24/7.</p>
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    <span>Сколько длится диагностика?</span>
+                    <i class='bx bx-chevron-down'></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Полная диагностика занимает от 30 минут до 2 часов в зависимости от сложности работ.</p>
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    <span>Есть ли гарантия на работы?</span>
+                    <i class='bx bx-chevron-down'></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Да, на все виды работ предоставляется гарантия 1 год или 20 000 км пробега.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<style>
+.service-page {
+    padding-bottom: 20px;
+}
+
+/* Карточки сервиса */
+.service-quick-actions {
+    margin-bottom: 30px;
+}
+
+.actions-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.service-action-card {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid #3730a3;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+}
+
+.service-action-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(30, 58, 138, 0.5);
+    border-color: #60a5fa;
+}
+
+.action-icon {
+    width: 50px;
+    height: 50px;
+    background: rgba(96, 165, 250, 0.2);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #60a5fa;
+}
+
+.action-icon i {
+    font-size: 24px;
+    color: #60a5fa;
+}
+
+.action-content {
+    flex: 1;
+}
+
+.action-content h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #f8fafc;
+    margin-bottom: 4px;
+}
+
+.action-content p {
+    font-size: 14px;
+    color: #bfdbfe;
+}
+
+.action-arrow {
+    font-size: 20px;
+    color: #94a3b8;
+}
+
+/* Акции */
+.service-promotions {
+    margin-bottom: 30px;
+}
+
+.promotions-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+.promotion-card {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid #3730a3;
+    position: relative;
+    overflow: hidden;
+}
+
+.promotion-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.promotion-badge {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+}
+
+.promotion-content h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #f8fafc;
+    margin-bottom: 8px;
+}
+
+.promotion-content p {
+    font-size: 14px;
+    color: #bfdbfe;
+    margin-bottom: 12px;
+}
+
+.promotion-price {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.old-price {
+    font-size: 14px;
+    color: #94a3b8;
+    text-decoration: line-through;
+}
+
+.new-price {
+    font-size: 18px;
+    font-weight: 700;
+    color: #86efac;
+}
+
+/* Статистика */
+.service-stats {
+    margin-bottom: 30px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.stat-card {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid #3730a3;
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 24px;
+    font-weight: 800;
+    color: #60a5fa;
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #bfdbfe;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* FAQ */
+.service-faq {
+    margin-bottom: 20px;
+}
+
+.faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.faq-item {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    border-radius: 12px;
+    border: 1px solid #3730a3;
+    overflow: hidden;
+}
+
+.faq-question {
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.faq-question:hover {
+    background: rgba(96, 165, 250, 0.1);
+}
+
+.faq-question span {
+    font-size: 14px;
+    font-weight: 600;
+    color: #f8fafc;
+}
+
+.faq-question i {
+    color: #94a3b8;
+    transition: transform 0.3s ease;
+}
+
+.faq-answer {
+    padding: 0 20px;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.faq-answer p {
+    font-size: 14px;
+    color: #bfdbfe;
+    line-height: 1.5;
+    padding-bottom: 16px;
+}
+
+.faq-item.active .faq-answer {
+    max-height: 200px;
+}
+
+.faq-item.active .faq-question i {
+    transform: rotate(180deg);
+}
+
+/* Адаптивность */
+@media (min-width: 768px) {
+    .promotions-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .actions-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+</style>
+
+<script>
+function toggleFaq(element) {
+    element.classList.toggle('active');
+}
+
+function showServiceInfo() {
+    showTelegramAlert('Наши услуги:\n\n• Техническое обслуживание\n• Диагностика\n• Ремонт двигателя\n• Ремонт ходовой\n• Замена масла\n• Шиномонтаж\n• И многое другое!');
+}
+
+function openContacts() {
+    openPage('/contacts');
+}
+
+// Автоматически открываем первый FAQ
+document.addEventListener('DOMContentLoaded', function() {
+    const firstFaq = document.querySelector('.faq-item');
+    if (firstFaq) {
+        firstFaq.classList.add('active');
+    }
+});
+</script>
+{% endblock %}

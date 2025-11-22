@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Авто 2-3 млн ₽ - CHI AUTO{% endblock %}
+
+{% block content %}
+<div class="price-range-page">
+    <header class="page-header">
+        <button class="btn-back" onclick="history.back()">
+            <i class='bx bx-arrow-back'></i>
+        </button>
+        <h1>2-3 млн ₽</h1>
+        <p class="page-subtitle">Оптимальное сочетание цены и качества</p>
+    </header>
+
+    <!-- Фильтры -->
+    <section class="range-filters">
+        <div class="filters-row">
+            <div class="filter-tag active" onclick="setFilter('all')">Все</div>
+            <div class="filter-tag" onclick="setFilter('available')">В наличии</div>
+            <div class="filter-tag" onclick="setFilter('suv')">Кроссоверы</div>
+            <div class="filter-tag" onclick="setFilter('premium')">Премиум</div>
+        </div>
+    </section>
+
+    <!-- Автомобили -->
+    <section class="range-cars">
+        <div class="cars-count">
+            Найдено автомобилей: <span id="carsCount">{{ cars|length }}</span>
+        </div>
+
+        {% if cars %}
+        <div class="cars-grid" id="carsGrid">
+            {% for car_id, car in cars.items() %}
+            <div class="car-card" data-available="{{ car.available }}" data-type="suv" data-category="premium" onclick="openPage('/car/{{ car_id }}')">
+                <div class="car-image">
+                    <img src="{{ url_for('static', filename='images/cars/' + car.images[0]) }}" alt="{{ car.name }}">
+                    {% if car.year >= 2023 %}
+                    <div class="car-badge popular">ПОПУЛЯРНЫЙ</div>
+                    {% endif %}
+                </div>
+                <div class="car-info">
+                    <h3>{{ car.name }}</h3>
+                    <p class="car-year">{{ car.year }} г.</p>
+                    <div class="car-specs">
+                        <span class="spec">{{ car.engine }}</span>
+                        <span class="spec">{{ car.transmission }}</span>
+                    </div>
+                    <div class="car-price">
+                        {{ "{:,}".format(car.price).replace(",", " ") }} ₽
+                    </div>
+                </div>
+                <div class="car-availability {{ 'available' if car.available else 'unavailable' }}">
+                    {{ 'В наличии' if car.available else 'Под заказ' }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="no-cars">
+            <div class="no-cars-icon">
+                <i class='bx bx-search'></i>
+            </div>
+            <h3>Автомобили не найдены</h3>
+            <p>В этом ценовом диапазоне временно нет автомобилей</p>
+            <button class="btn-view-all" onclick="openPage('/catalog')">
+                Вернуться в каталог
+            </button>
+        </div>
+        {% endif %}
+    </section>
+</div>
+
+<style>
+.car-badge.popular {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+}
+</style>
+
+<script>
+// Тот же JavaScript что и для range_0-2.html
+</script>
+{% endblock %}

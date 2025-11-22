@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+
+{% block title %}Авто до 2 млн ₽ - CHI AUTO{% endblock %}
+
+{% block content %}
+<div class="price-range-page">
+    <header class="page-header">
+        <button class="btn-back" onclick="history.back()">
+            <i class='bx bx-arrow-back'></i>
+        </button>
+        <h1>До 2 млн ₽</h1>
+        <p class="page-subtitle">Бюджетные и экономичные автомобили</p>
+    </header>
+
+    <!-- Фильтры -->
+    <section class="range-filters">
+        <div class="filters-row">
+            <div class="filter-tag active" onclick="setFilter('all')">Все</div>
+            <div class="filter-tag" onclick="setFilter('available')">В наличии</div>
+            <div class="filter-tag" onclick="setFilter('new')">Новые</div>
+            <div class="filter-tag" onclick="setFilter('economy')">Эконом-класс</div>
+        </div>
+    </section>
+
+    <!-- Автомобили -->
+    <section class="range-cars">
+        <div class="cars-count">
+            Найдено автомобилей: <span id="carsCount">{{ cars|length }}</span>
+        </div>
+
+        {% if cars %}
+        <div class="cars-grid" id="carsGrid">
+            {% for car_id, car in cars.items() %}
+            <div class="car-card" data-available="{{ car.available }}" data-year="{{ car.year }}" data-category="economy" onclick="openPage('/car/{{ car_id }}')">
+                <div class="car-image">
+                    <img src="{{ url_for('static', filename='images/cars/' + car.images[0]) }}" alt="{{ car.name }}">
+                    {% if car.year >= 2024 %}
+                    <div class="car-badge new">NEW</div>
+                    {% endif %}
+                </div>
+                <div class="car-info">
+                    <h3>{{ car.name }}</h3>
+                    <p class="car-year">{{ car.year }} г.</p>
+                    <div class="car-specs">
+                        <span class="spec">{{ car.engine }}</span>
+                        <span class="spec">{{ car.transmission }}</span>
+                    </div>
+                    <div class="car-price">
+                        {{ "{:,}".format(car.price).replace(",", " ") }} ₽
+                    </div>
+                </div>
+                <div class="car-availability {{ 'available' if car.available else 'unavailable' }}">
+                    {{ 'В наличии' if car.available else 'Под заказ' }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="no-cars">
+            <div class="no-cars-icon">
+                <i class='bx bx-search'></i>
+            </div>
+            <h3>Автомобили не найдены</h3>
+            <p>В этом ценовом диапазоне временно нет автомобилей</p>
+            <button class="btn-view-all" onclick="openPage('/catalog')">
+                Вернуться в каталог
+            </button>
+        </div>
+        {% endif %}
+    </section>
+</div>
+
+<style>
+.price-range-page {
+    padding-bottom: 20px;
+}
+
+.page-header {
+    text-align: center;
+    margin-bottom: 24px;
+    position: relative;
+}
+
+.page-header .btn-back {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.page-header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #f8fafc;
+    margin-bottom: 8px;
+}
+
+.page-subtitle {
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+/* Фильтры */
+.range-filters {
+    margin-bottom: 24px;
+}
+
+.filters-row {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 8px 0;
+}
+
+.filter-tag {
+    background: rgba(96, 165, 250, 0.2);
+    border: 1px solid #60a5fa;
+    color: #bfdbfe;
+    padding: 10px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.filter-tag.active {
+    background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+    color: white;
+    border-color: #3b82f6;
+}
+
+.filter-tag:hover {
+    transform: translateY(-1px);
+}
+
+/* Счетчик автомобилей */
+.cars-count {
+    font-size: 14px;
+    color: #94a3b8;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.cars-count span {
+    color: #60a5fa;
+    font-weight: 600;
+}
+
+/* Бейдж NEW */
+.car-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.car-badge.new {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+}
+
+.car-image {
+    position: relative;
+}
+
+/* Адаптивность */
+@media (min-width: 768px) {
+    .filters-row {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .cars-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .cars-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+</style>
+
+<script>
+let currentFilter = 'all';
+
+function setFilter(filter) {
+    currentFilter = filter;
+
+    // Обновляем активный фильтр
+    document.querySelectorAll('.filter-tag').forEach(tag => {
+        tag.classList.remove('active');
+    });
+    event.target.classList.add('active');
+
+    // Фильтруем автомобили
+    filterCars();
+}
+
+function filterCars() {
+    const cars = document.querySelectorAll('.car-card');
+    let visibleCount = 0;
+
+    cars.forEach(car => {
+        let show = true;
+
+        switch(currentFilter) {
+            case 'available':
+                show = car.dataset.available === 'True';
+                break;
+            case 'new':
+                show = parseInt(car.dataset.year) >= 2024;
+                break;
+            case 'economy':
+                show = car.dataset.category === 'economy';
+                break;
+        }
+
+        car.style.display = show ? 'block' : 'none';
+        if (show) visibleCount++;
+    });
+
+    // Обновляем счетчик
+    document.getElementById('carsCount').textContent = visibleCount;
+}
+
+// Инициализация фильтров
+document.addEventListener('DOMContentLoaded', function() {
+    filterCars();
+});
+</script>
+{% endblock %}

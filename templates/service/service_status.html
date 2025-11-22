@@ -1,0 +1,711 @@
+{% extends "base.html" %}
+
+{% block title %}Статус ремонта - CHI AUTO{% endblock %}
+
+{% block content %}
+<div class="service-status-page">
+    <header class="page-header">
+        <button class="btn-back" onclick="history.back()">
+            <i class='bx bx-arrow-back'></i>
+        </button>
+        <h1>Статус ремонта</h1>
+    </header>
+
+    <!-- Поиск заявки -->
+    <section class="status-search">
+        <div class="search-card">
+            <h3>Проверить статус</h3>
+            <p>Введите номер заявки или VIN автомобиля</p>
+
+            <div class="search-form">
+                <div class="form-group">
+                    <input type="text" id="searchQuery" placeholder="Номер заявки или VIN" class="search-input">
+                </div>
+                <button class="btn-action primary" onclick="searchStatus()">
+                    <i class='bx bx-search'></i>
+                    Найти
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Пример статуса (скрыт по умолчанию) -->
+    <section class="status-result" id="statusResult" style="display: none;">
+        <div class="status-card">
+            <div class="status-header">
+                <div class="order-info">
+                    <h3>Заявка #<span id="orderNumber">-</span></h3>
+                    <p id="orderCar">-</p>
+                </div>
+                <div class="status-badge" id="statusBadge">
+                    <span>В обработке</span>
+                </div>
+            </div>
+
+            <!-- Прогресс ремонта -->
+            <div class="repair-progress">
+                <div class="progress-steps">
+                    <div class="progress-step active completed">
+                        <div class="step-icon">
+                            <i class='bx bx-check'></i>
+                        </div>
+                        <div class="step-info">
+                            <span class="step-title">Заявка принята</span>
+                            <span class="step-date" id="step1Date">-</span>
+                        </div>
+                    </div>
+
+                    <div class="progress-step active completed">
+                        <div class="step-icon">
+                            <i class='bx bx-check'></i>
+                        </div>
+                        <div class="step-info">
+                            <span class="step-title">Диагностика</span>
+                            <span class="step-date" id="step2Date">-</span>
+                        </div>
+                    </div>
+
+                    <div class="progress-step active">
+                        <div class="step-icon">
+                            <i class='bx bx-cog'></i>
+                        </div>
+                        <div class="step-info">
+                            <span class="step-title">Ремонт</span>
+                            <span class="step-date" id="step3Date">-</span>
+                        </div>
+                    </div>
+
+                    <div class="progress-step">
+                        <div class="step-icon">
+                            <i class='bx bx-car'></i>
+                        </div>
+                        <div class="step-info">
+                            <span class="step-title">Готово</span>
+                            <span class="step-date">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Детали заявки -->
+            <div class="order-details">
+                <div class="detail-section">
+                    <h4>Информация о автомобиле</h4>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">Марка/Модель:</span>
+                            <span class="detail-value" id="detailCar">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">VIN:</span>
+                            <span class="detail-value" id="detailVin">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Год:</span>
+                            <span class="detail-value" id="detailYear">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h4>Работы</h4>
+                    <div class="services-list" id="servicesList">
+                        <!-- Список услуг будет заполнен JavaScript -->
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h4>Контакты</h4>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class='bx bx-user'></i>
+                            <span id="contactManager">-</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class='bx bx-phone'></i>
+                            <span id="contactPhone">-</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class='bx bx-time'></i>
+                            <span id="contactHours">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Действия -->
+            <div class="status-actions">
+                <button class="btn-action secondary" onclick="contactManager()">
+                    <i class='bx bx-phone'></i>
+                    Связаться с менеджером
+                </button>
+                <button class="btn-action primary" onclick="updateStatus()">
+                    <i class='bx bx-refresh'></i>
+                    Обновить статус
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Частые статусы -->
+    <section class="common-statuses">
+        <h2 class="section-title">Частые вопросы по статусам</h2>
+        <div class="status-faq">
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    <span>Что означает "В диагностике"?</span>
+                    <i class='bx bx-chevron-down'></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Автомобиль проходит компьютерную диагностику и осмотр мастером. Обычно это занимает 1-2 часа.</p>
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    <span>Как долго длится ремонт?</span>
+                    <i class='bx bx-chevron-down'></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Время ремонта зависит от сложности работ. Обычно от 1 до 5 рабочих дней. Точные сроки уточняйте у менеджера.</p>
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    <span>Могу ли я забрать авто вечером?</span>
+                    <i class='bx bx-chevron-down'></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Да, по предварительной договоренности с менеджером. Сервис работает до 19:00.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<style>
+.service-status-page {
+    padding-bottom: 20px;
+}
+
+/* Поиск */
+.status-search {
+    margin-bottom: 24px;
+}
+
+.search-card {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid #3730a3;
+    text-align: center;
+}
+
+.search-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #f8fafc;
+    margin-bottom: 8px;
+}
+
+.search-card p {
+    font-size: 14px;
+    color: #bfdbfe;
+    margin-bottom: 20px;
+}
+
+.search-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.search-input {
+    background: #0a1128;
+    border: 1px solid #3730a3;
+    border-radius: 8px;
+    padding: 14px 16px;
+    color: #ffffff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+}
+
+/* Результат статуса */
+.status-result {
+    margin-bottom: 30px;
+}
+
+.status-card {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    border-radius: 16px;
+    border: 1px solid #3730a3;
+    overflow: hidden;
+}
+
+.status-header {
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #3730a3;
+}
+
+.order-info h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #f8fafc;
+    margin-bottom: 4px;
+}
+
+.order-info p {
+    font-size: 14px;
+    color: #bfdbfe;
+}
+
+.status-badge {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-badge.in-progress {
+    background: rgba(59, 130, 246, 0.2);
+    color: #60a5fa;
+    border: 1px solid #3b82f6;
+}
+
+.status-badge.completed {
+    background: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
+    border: 1px solid #16a34a;
+}
+
+.status-badge.waiting {
+    background: rgba(245, 158, 11, 0.2);
+    color: #f59e0b;
+    border: 1px solid #d97706;
+}
+
+/* Прогресс ремонта */
+.repair-progress {
+    padding: 24px;
+    border-bottom: 1px solid #3730a3;
+}
+
+.progress-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.progress-step {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+}
+
+.progress-step::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 40px;
+    bottom: -20px;
+    width: 2px;
+    background: #3730a3;
+    z-index: 1;
+}
+
+.progress-step:last-child::before {
+    display: none;
+}
+
+.progress-step.completed::before {
+    background: #22c55e;
+}
+
+.step-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #3730a3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s ease;
+}
+
+.progress-step.active .step-icon {
+    background: #3b82f6;
+}
+
+.progress-step.completed .step-icon {
+    background: #22c55e;
+}
+
+.step-icon i {
+    font-size: 20px;
+    color: #94a3b8;
+}
+
+.progress-step.active .step-icon i,
+.progress-step.completed .step-icon i {
+    color: white;
+}
+
+.step-info {
+    flex: 1;
+}
+
+.step-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #f8fafc;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.step-date {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+.progress-step.active .step-title {
+    color: #60a5fa;
+}
+
+.progress-step.completed .step-title {
+    color: #22c55e;
+}
+
+/* Детали заявки */
+.order-details {
+    padding: 24px;
+}
+
+.detail-section {
+    margin-bottom: 24px;
+}
+
+.detail-section:last-child {
+    margin-bottom: 0;
+}
+
+.detail-section h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #bfdbfe;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #3730a3;
+}
+
+.detail-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.detail-label {
+    font-size: 14px;
+    color: #94a3b8;
+}
+
+.detail-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #f8fafc;
+    text-align: right;
+}
+
+/* Список услуг */
+.services-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.service-detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(96, 165, 250, 0.1);
+    border-radius: 8px;
+    border: 1px solid #3730a3;
+}
+
+.service-detail-name {
+    font-size: 14px;
+    color: #f8fafc;
+}
+
+.service-detail-price {
+    font-size: 14px;
+    font-weight: 600;
+    color: #86efac;
+}
+
+/* Контактная информация */
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: rgba(96, 165, 250, 0.1);
+    border-radius: 8px;
+    border: 1px solid #3730a3;
+}
+
+.contact-item i {
+    font-size: 18px;
+    color: #60a5fa;
+}
+
+.contact-item span {
+    font-size: 14px;
+    color: #f8fafc;
+}
+
+/* Действия */
+.status-actions {
+    padding: 20px 24px;
+    border-top: 1px solid #3730a3;
+    display: flex;
+    gap: 12px;
+}
+
+.status-actions .btn-action {
+    flex: 1;
+}
+
+/* FAQ */
+.common-statuses {
+    margin-bottom: 20px;
+}
+
+.status-faq {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Адаптивность */
+@media (min-width: 768px) {
+    .search-form {
+        flex-direction: row;
+    }
+
+    .search-form .form-group {
+        flex: 1;
+    }
+
+    .status-actions {
+        flex-direction: row;
+    }
+
+    .contact-info {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+}
+</style>
+
+<script>
+// Пример данных для демонстрации
+const demoOrders = {
+    'CHI2024001': {
+        car: 'Toyota Camry 2020',
+        vin: 'JTDBR32E200015263',
+        year: '2020 г.',
+        status: 'in-progress',
+        manager: 'Иван Петров',
+        phone: '+7 (3952) 12-34-56',
+        hours: 'Пн-Пт: 9:00-19:00',
+        services: [
+            { name: 'Замена масла и фильтра', price: '2 500 ₽' },
+            { name: 'Диагностика ходовой', price: '2 000 ₽' },
+            { name: 'Замена тормозных колодок', price: '4 500 ₽' }
+        ],
+        dates: {
+            created: '2024-01-15 10:30',
+            diagnosed: '2024-01-15 14:00',
+            repair: '2024-01-16 09:00'
+        }
+    },
+    'CHI2024002': {
+        car: 'Geely Monjaro 2022',
+        vin: 'LGWEF7A25EF123456',
+        year: '2022 г.',
+        status: 'completed',
+        manager: 'Мария Сидорова',
+        phone: '+7 (495) 123-45-67',
+        hours: 'Пн-Пт: 8:00-20:00',
+        services: [
+            { name: 'Компьютерная диагностика', price: '1 500 ₽' },
+            { name: 'ТО-1', price: '5 000 ₽' }
+        ],
+        dates: {
+            created: '2024-01-10 11:15',
+            diagnosed: '2024-01-10 13:45',
+            repair: '2024-01-11 10:00',
+            completed: '2024-01-12 16:30'
+        }
+    }
+};
+
+function searchStatus() {
+    const query = document.getElementById('searchQuery').value.trim().toUpperCase();
+
+    if (!query) {
+        showTelegramAlert('Пожалуйста, введите номер заявки или VIN');
+        return;
+    }
+
+    // Поиск заявки
+    let order = demoOrders[query];
+
+    // Если не нашли по номеру, ищем по VIN
+    if (!order) {
+        for (const orderNumber in demoOrders) {
+            if (demoOrders[orderNumber].vin === query) {
+                order = demoOrders[orderNumber];
+                break;
+            }
+        }
+    }
+
+    if (order) {
+        displayOrderStatus(query, order);
+    } else {
+        showTelegramAlert('Заявка не найдена. Проверьте номер заявки или VIN.');
+    }
+}
+
+function displayOrderStatus(orderNumber, order) {
+    // Обновляем информацию о заявке
+    document.getElementById('orderNumber').textContent = orderNumber;
+    document.getElementById('orderCar').textContent = order.car;
+    document.getElementById('detailCar').textContent = order.car;
+    document.getElementById('detailVin').textContent = order.vin;
+    document.getElementById('detailYear').textContent = order.year;
+    document.getElementById('contactManager').textContent = order.manager;
+    document.getElementById('contactPhone').textContent = order.phone;
+    document.getElementById('contactHours').textContent = order.hours;
+
+    // Обновляем статус
+    const statusBadge = document.getElementById('statusBadge');
+    statusBadge.className = 'status-badge';
+
+    switch(order.status) {
+        case 'in-progress':
+            statusBadge.classList.add('in-progress');
+            statusBadge.innerHTML = '<span>В работе</span>';
+            break;
+        case 'completed':
+            statusBadge.classList.add('completed');
+            statusBadge.innerHTML = '<span>Завершено</span>';
+            break;
+        case 'waiting':
+            statusBadge.classList.add('waiting');
+            statusBadge.innerHTML = '<span>Ожидание</span>';
+            break;
+    }
+
+    // Обновляем даты прогресса
+    if (order.dates.created) {
+        document.getElementById('step1Date').textContent = formatDate(order.dates.created);
+    }
+    if (order.dates.diagnosed) {
+        document.getElementById('step2Date').textContent = formatDate(order.dates.diagnosed);
+    }
+    if (order.dates.repair) {
+        document.getElementById('step3Date').textContent = formatDate(order.dates.repair);
+    }
+
+    // Обновляем список услуг
+    const servicesList = document.getElementById('servicesList');
+    servicesList.innerHTML = '';
+
+    order.services.forEach(service => {
+        const serviceElement = document.createElement('div');
+        serviceElement.className = 'service-detail-item';
+        serviceElement.innerHTML = `
+            <span class="service-detail-name">${service.name}</span>
+            <span class="service-detail-price">${service.price}</span>
+        `;
+        servicesList.appendChild(serviceElement);
+    });
+
+    // Показываем результат
+    document.getElementById('statusResult').style.display = 'block';
+
+    // Прокручиваем к результату
+    document.getElementById('statusResult').scrollIntoView({ behavior: 'smooth' });
+}
+
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ru-RU') + ' ' + date.toLocaleTimeString('ru-RU', {
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+}
+
+function contactManager() {
+    const phone = document.getElementById('contactPhone').textContent;
+    if (phone && phone !== '-') {
+        if (typeof Telegram !== 'undefined') {
+            const tg = window.Telegram.WebApp;
+            tg.openTelegramLink(`tel:${phone}`);
+        } else {
+            window.open(`tel:${phone}`, '_blank');
+        }
+    }
+}
+
+function updateStatus() {
+    showTelegramAlert('Статус обновлен');
+    // В реальном приложении здесь был бы запрос к API
+}
+
+function toggleFaq(element) {
+    element.classList.toggle('active');
+}
+
+// Автозаполнение для демонстрации
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('searchQuery').placeholder = 'Например: CHI2024001';
+
+    // Автоматически открываем первый FAQ
+    const firstFaq = document.querySelector('.faq-item');
+    if (firstFaq) {
+        firstFaq.classList.add('active');
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,687 @@
+{% extends "base.html" %}
+
+{% block title %}Запись на сервис - CHI AUTO{% endblock %}
+
+{% block content %}
+<div class="service-booking-page">
+    <header class="page-header">
+        <button class="btn-back" onclick="history.back()">
+            <i class='bx bx-arrow-back'></i>
+        </button>
+        <h1>Запись на сервис</h1>
+    </header>
+
+    <div class="booking-steps">
+        <div class="step active" data-step="1">
+            <div class="step-number">1</div>
+            <span>Данные авто</span>
+        </div>
+        <div class="step" data-step="2">
+            <div class="step-number">2</div>
+            <span>Услуги</span>
+        </div>
+        <div class="step" data-step="3">
+            <div class="step-number">3</div>
+            <span>Дата и время</span>
+        </div>
+        <div class="step" data-step="4">
+            <div class="step-number">4</div>
+            <span>Подтверждение</span>
+        </div>
+    </div>
+
+    <!-- Шаг 1: Данные авто -->
+    <div class="booking-step active" id="step1">
+        <form class="booking-form">
+            <div class="form-group">
+                <label for="carBrand">Марка автомобиля</label>
+                <input type="text" id="carBrand" required placeholder="Например: Toyota">
+            </div>
+
+            <div class="form-group">
+                <label for="carModel">Модель</label>
+                <input type="text" id="carModel" required placeholder="Например: Camry">
+            </div>
+
+            <div class="form-group">
+                <label for="carYear">Год выпуска</label>
+                <input type="number" id="carYear" required placeholder="Например: 2020" min="1990" max="2024">
+            </div>
+
+            <div class="form-group">
+                <label for="carVin">VIN номер (опционально)</label>
+                <input type="text" id="carVin" placeholder="Введите VIN">
+            </div>
+
+            <div class="form-group">
+                <label for="carIssue">Описание проблемы</label>
+                <textarea id="carIssue" required placeholder="Опишите проблему или выберите услугу..."></textarea>
+            </div>
+
+            <button type="button" class="btn-action primary large" onclick="nextStep(2)">
+                Продолжить
+            </button>
+        </form>
+    </div>
+
+    <!-- Шаг 2: Услуги -->
+    <div class="booking-step" id="step2">
+        <div class="services-list">
+            <h3>Выберите услуги</h3>
+
+            <div class="service-category">
+                <h4>Техническое обслуживание</h4>
+                <div class="services-grid">
+                    <div class="service-item" onclick="toggleService(this)">
+                        <div class="service-info">
+                            <h5>Замена масла</h5>
+                            <p>Замена масла и фильтра</p>
+                            <div class="service-price">от 2 500 ₽</div>
+                        </div>
+                        <div class="service-checkbox">
+                            <i class='bx bx-check'></i>
+                        </div>
+                    </div>
+
+                    <div class="service-item" onclick="toggleService(this)">
+                        <div class="service-info">
+                            <h5>ТО-1</h5>
+                            <p>Первое техническое обслуживание</p>
+                            <div class="service-price">от 5 000 ₽</div>
+                        </div>
+                        <div class="service-checkbox">
+                            <i class='bx bx-check'></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="service-category">
+                <h4>Диагностика</h4>
+                <div class="services-grid">
+                    <div class="service-item" onclick="toggleService(this)">
+                        <div class="service-info">
+                            <h5>Компьютерная диагностика</h5>
+                            <p>Проверка электронных систем</p>
+                            <div class="service-price">от 1 500 ₽</div>
+                        </div>
+                        <div class="service-checkbox">
+                            <i class='bx bx-check'></i>
+                        </div>
+                    </div>
+
+                    <div class="service-item" onclick="toggleService(this)">
+                        <div class="service-info">
+                            <h5>Диагностика ходовой</h5>
+                            <p>Проверка подвески и рулевого управления</p>
+                            <div class="service-price">от 2 000 ₽</div>
+                        </div>
+                        <div class="service-checkbox">
+                            <i class='bx bx-check'></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="booking-actions">
+            <button type="button" class="btn-action secondary" onclick="prevStep(1)">
+                Назад
+            </button>
+            <button type="button" class="btn-action primary" onclick="nextStep(3)">
+                Продолжить
+            </button>
+        </div>
+    </div>
+
+    <!-- Шаг 3: Дата и время -->
+    <div class="booking-step" id="step3">
+        <div class="datetime-selection">
+            <div class="form-group">
+                <label for="serviceCity">Город</label>
+                <select id="serviceCity" required>
+                    <option value="">Выберите город</option>
+                    <option value="irkutsk">Иркутск</option>
+                    <option value="moscow">Москва</option>
+                    <option value="barnaul">Барнаул</option>
+                    <!-- Другие города -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="serviceDate">Дата</label>
+                <input type="date" id="serviceDate" required min="{{ today }}">
+            </div>
+
+            <div class="form-group">
+                <label for="serviceTime">Время</label>
+                <select id="serviceTime" required>
+                    <option value="">Выберите время</option>
+                    <option value="09:00">09:00</option>
+                    <option value="10:00">10:00</option>
+                    <option value="11:00">11:00</option>
+                    <option value="12:00">12:00</option>
+                    <option value="14:00">14:00</option>
+                    <option value="15:00">15:00</option>
+                    <option value="16:00">16:00</option>
+                    <option value="17:00">17:00</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="booking-actions">
+            <button type="button" class="btn-action secondary" onclick="prevStep(2)">
+                Назад
+            </button>
+            <button type="button" class="btn-action primary" onclick="nextStep(4)">
+                Продолжить
+            </button>
+        </div>
+    </div>
+
+    <!-- Шаг 4: Подтверждение -->
+    <div class="booking-step" id="step4">
+        <div class="confirmation-summary">
+            <h3>Проверьте данные</h3>
+
+            <div class="summary-section">
+                <h4>Данные автомобиля</h4>
+                <div class="summary-item">
+                    <span>Марка и модель:</span>
+                    <span id="summaryCar"></span>
+                </div>
+                <div class="summary-item">
+                    <span>Год выпуска:</span>
+                    <span id="summaryYear"></span>
+                </div>
+                <div class="summary-item">
+                    <span>Проблема:</span>
+                    <span id="summaryIssue"></span>
+                </div>
+            </div>
+
+            <div class="summary-section">
+                <h4>Услуги</h4>
+                <div id="summaryServices"></div>
+            </div>
+
+            <div class="summary-section">
+                <h4>Дата и время</h4>
+                <div class="summary-item">
+                    <span>Город:</span>
+                    <span id="summaryCity"></span>
+                </div>
+                <div class="summary-item">
+                    <span>Дата и время:</span>
+                    <span id="summaryDateTime"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="booking-actions">
+            <button type="button" class="btn-action secondary" onclick="prevStep(3)">
+                Назад
+            </button>
+            <button type="button" class="btn-action primary" onclick="submitBooking()">
+                Подтвердить запись
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+.service-booking-page {
+    padding-bottom: 20px;
+}
+
+/* Шаги */
+.booking-steps {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.booking-steps::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #3730a3;
+    z-index: 1;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    flex: 1;
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #3730a3;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    margin-bottom: 8px;
+    transition: all 0.3s ease;
+}
+
+.step.active .step-number {
+    background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+    color: white;
+}
+
+.step span {
+    font-size: 12px;
+    color: #94a3b8;
+    text-align: center;
+}
+
+.step.active span {
+    color: #60a5fa;
+    font-weight: 500;
+}
+
+/* Шаги формы */
+.booking-step {
+    display: none;
+}
+
+.booking-step.active {
+    display: block;
+}
+
+/* Формы */
+.booking-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #f8fafc;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    background: #1e3a8a;
+    border: 1px solid #3730a3;
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: #ffffff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Услуги */
+.services-list {
+    margin-bottom: 20px;
+}
+
+.services-list h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #f8fafc;
+    margin-bottom: 20px;
+}
+
+.service-category {
+    margin-bottom: 24px;
+}
+
+.service-category h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #bfdbfe;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #3730a3;
+}
+
+.services-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.service-item {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid #3730a3;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.service-item:hover {
+    border-color: #60a5fa;
+    transform: translateY(-1px);
+}
+
+.service-item.selected {
+    border-color: #22c55e;
+    background: linear-gradient(135deg, #1e3a8a 0%, #166534 100%);
+}
+
+.service-info {
+    flex: 1;
+}
+
+.service-info h5 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #f8fafc;
+    margin-bottom: 4px;
+}
+
+.service-info p {
+    font-size: 12px;
+    color: #bfdbfe;
+    margin-bottom: 8px;
+}
+
+.service-price {
+    font-size: 14px;
+    font-weight: 700;
+    color: #86efac;
+}
+
+.service-checkbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #60a5fa;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.service-item.selected .service-checkbox {
+    background: #22c55e;
+    border-color: #22c55e;
+}
+
+.service-checkbox i {
+    font-size: 14px;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.service-item.selected .service-checkbox i {
+    opacity: 1;
+}
+
+/* Выбор даты и времени */
+.datetime-selection {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+/* Подтверждение */
+.confirmation-summary {
+    margin-bottom: 20px;
+}
+
+.confirmation-summary h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #f8fafc;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.summary-section {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid #3730a3;
+    margin-bottom: 16px;
+}
+
+.summary-section h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #bfdbfe;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #3730a3;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.summary-item span:first-child {
+    font-size: 14px;
+    color: #bfdbfe;
+}
+
+.summary-item span:last-child {
+    font-size: 14px;
+    font-weight: 600;
+    color: #f8fafc;
+    text-align: right;
+}
+
+/* Кнопки навигации */
+.booking-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.booking-actions .btn-action {
+    flex: 1;
+}
+
+/* Адаптивность */
+@media (min-width: 768px) {
+    .services-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .datetime-selection {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+    }
+}
+</style>
+
+<script>
+let currentStep = 1;
+let selectedServices = [];
+
+function nextStep(step) {
+    // Валидация текущего шага
+    if (!validateStep(currentStep)) {
+        return;
+    }
+
+    // Обновляем данные для следующего шага
+    if (step === 4) {
+        updateSummary();
+    }
+
+    // Переходим к следующему шагу
+    document.getElementById(`step${currentStep}`).classList.remove('active');
+    document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
+
+    currentStep = step;
+
+    document.getElementById(`step${currentStep}`).classList.add('active');
+    document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('active');
+}
+
+function prevStep(step) {
+    document.getElementById(`step${currentStep}`).classList.remove('active');
+    document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
+
+    currentStep = step;
+
+    document.getElementById(`step${currentStep}`).classList.add('active');
+    document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('active');
+}
+
+function validateStep(step) {
+    switch(step) {
+        case 1:
+            const brand = document.getElementById('carBrand').value;
+            const model = document.getElementById('carModel').value;
+            const year = document.getElementById('carYear').value;
+            const issue = document.getElementById('carIssue').value;
+
+            if (!brand || !model || !year || !issue) {
+                showTelegramAlert('Пожалуйста, заполните все обязательные поля');
+                return false;
+            }
+            return true;
+
+        case 2:
+            if (selectedServices.length === 0) {
+                showTelegramAlert('Пожалуйста, выберите хотя бы одну услугу');
+                return false;
+            }
+            return true;
+
+        case 3:
+            const city = document.getElementById('serviceCity').value;
+            const date = document.getElementById('serviceDate').value;
+            const time = document.getElementById('serviceTime').value;
+
+            if (!city || !date || !time) {
+                showTelegramAlert('Пожалуйста, выберите город, дату и время');
+                return false;
+            }
+            return true;
+    }
+    return true;
+}
+
+function toggleService(element) {
+    element.classList.toggle('selected');
+
+    const serviceName = element.querySelector('h5').textContent;
+    const servicePrice = element.querySelector('.service-price').textContent;
+
+    if (element.classList.contains('selected')) {
+        selectedServices.push({
+            name: serviceName,
+            price: servicePrice
+        });
+    } else {
+        selectedServices = selectedServices.filter(service => service.name !== serviceName);
+    }
+}
+
+function updateSummary() {
+    // Данные авто
+    document.getElementById('summaryCar').textContent =
+        `${document.getElementById('carBrand').value} ${document.getElementById('carModel').value}`;
+    document.getElementById('summaryYear').textContent =
+        `${document.getElementById('carYear').value} г.`;
+    document.getElementById('summaryIssue').textContent =
+        document.getElementById('carIssue').value;
+
+    // Услуги
+    const servicesContainer = document.getElementById('summaryServices');
+    servicesContainer.innerHTML = '';
+
+    selectedServices.forEach(service => {
+        const serviceElement = document.createElement('div');
+        serviceElement.className = 'summary-item';
+        serviceElement.innerHTML = `
+            <span>${service.name}</span>
+            <span>${service.price}</span>
+        `;
+        servicesContainer.appendChild(serviceElement);
+    });
+
+    // Дата и время
+    const citySelect = document.getElementById('serviceCity');
+    const cityText = citySelect.options[citySelect.selectedIndex].text;
+    document.getElementById('summaryCity').textContent = cityText;
+
+    document.getElementById('summaryDateTime').textContent =
+        `${document.getElementById('serviceDate').value} в ${document.getElementById('serviceTime').value}`;
+}
+
+function submitBooking() {
+    const bookingData = {
+        car: {
+            brand: document.getElementById('carBrand').value,
+            model: document.getElementById('carModel').value,
+            year: document.getElementById('carYear').value,
+            vin: document.getElementById('carVin').value,
+            issue: document.getElementById('carIssue').value
+        },
+        services: selectedServices,
+        appointment: {
+            city: document.getElementById('serviceCity').value,
+            date: document.getElementById('serviceDate').value,
+            time: document.getElementById('serviceTime').value
+        }
+    };
+
+    // Здесь можно отправить данные на сервер
+    console.log('Booking submitted:', bookingData);
+
+    showTelegramAlert('✅ Запись на сервис успешно создана! Мы свяжемся с вами для подтверждения.');
+
+    // Возвращаем на главную страницу сервиса
+    setTimeout(() => {
+        openPage('/service');
+    }, 2000);
+}
+
+// Устанавливаем минимальную дату как сегодня
+document.addEventListener('DOMContentLoaded', function() {
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('serviceDate').min = today;
+});
+</script>
+{% endblock %}
