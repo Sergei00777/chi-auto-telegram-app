@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}Каталог автомобилей - CHI AUTO{% endblock %}
+
+{% block content %}
+<div class="catalog-page">
+    <header class="page-header">
+        <h1>Каталог автомобилей</h1>
+        <p>Выберите автомобиль вашей мечты</p>
+    </header>
+
+    <!-- Фильтры по цене -->
+    <section class="price-filters">
+        <h2>Фильтр по цене</h2>
+        <div class="filters-grid">
+            <div class="filter-card" onclick="openPage('/catalog/range/0-2')">
+                <div class="filter-price">до 2 млн ₽</div>
+            </div>
+            <div class="filter-card" onclick="openPage('/catalog/range/2-3')">
+                <div class="filter-price">2-3 млн ₽</div>
+            </div>
+            <div class="filter-card" onclick="openPage('/catalog/range/3-5')">
+                <div class="filter-price">3-5 млн ₽</div>
+            </div>
+            <div class="filter-card" onclick="openPage('/catalog/range/5-10')">
+                <div class="filter-price">5-10 млн ₽</div>
+            </div>
+            <div class="filter-card" onclick="openPage('/catalog/range/10-plus')">
+                <div class="filter-price">от 10 млн ₽</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Все автомобили -->
+    <section class="all-cars">
+        <h2>Все автомобили</h2>
+        <div class="cars-grid">
+            {% for car_id, car in cars.items() %}
+            <div class="car-card" onclick="openPage('/car/{{ car_id }}')">
+                <div class="car-image">
+                    <img src="{{ url_for('static', filename='images/cars/' + car.images[0]) }}" alt="{{ car.name }}">
+                </div>
+                <div class="car-info">
+                    <h3>{{ car.name }}</h3>
+                    <p class="car-year">{{ car.year }} г.</p>
+                    <div class="car-specs">
+                        <span class="spec">{{ car.engine }}</span>
+                        <span class="spec">{{ car.transmission }}</span>
+                    </div>
+                    <div class="car-price">
+                        {{ "{:,}".format(car.price).replace(",", " ") }} ₽
+                    </div>
+                </div>
+                <div class="car-availability {{ 'available' if car.available else 'unavailable' }}">
+                    {{ 'В наличии' if car.available else 'Нет в наличии' }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+
+<style>
+.page-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.page-header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #f8fafc;
+    margin-bottom: 8px;
+}
+
+.page-header p {
+    color: #94a3b8;
+}
+
+.price-filters {
+    margin-bottom: 30px;
+}
+
+.price-filters h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #f8fafc;
+    margin-bottom: 16px;
+}
+
+.filters-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.filter-card {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #3730a3;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-card:hover {
+    transform: translateY(-3px);
+    border-color: #60a5fa;
+    box-shadow: 0 8px 20px rgba(30, 58, 138, 0.5);
+}
+
+.filter-price {
+    font-size: 16px;
+    font-weight: 600;
+    color: #f8fafc;
+}
+
+.all-cars h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #f8fafc;
+    margin-bottom: 16px;
+}
+</style>
+{% endblock %}

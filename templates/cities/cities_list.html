@@ -1,0 +1,274 @@
+{% extends "base.html" %}
+
+{% block title %}Наши филиалы - CHI AUTO{% endblock %}
+
+{% block content %}
+<div class="cities-page">
+    <header class="page-header">
+        <h1>Наши филиалы</h1>
+        <p>Выберите город для просмотра автомобилей и контактов</p>
+    </header>
+
+    <!-- Поиск города -->
+    <section class="city-search">
+        <div class="search-container">
+            <i class='bx bx-search'></i>
+            <input type="text" id="citySearch" placeholder="Поиск города..." class="search-input">
+        </div>
+    </section>
+
+    <!-- Список городов -->
+    <section class="cities-list">
+        <div class="cities-grid">
+            {% for city_id, city in cities.items() %}
+            <div class="city-card" onclick="openPage('/city/{{ city_id }}')">
+                <div class="city-header">
+                    <div class="city-icon">
+                        <i class='bx bx-building'></i>
+                    </div>
+                    <div class="city-info">
+                        <h3 class="city-name">{{ city.name }}</h3>
+                        <p class="city-manager">Менеджер: {{ city.manager }}</p>
+                    </div>
+                </div>
+                <div class="city-details">
+                    <div class="city-detail">
+                        <i class='bx bx-phone'></i>
+                        <span>{{ city.phone }}</span>
+                    </div>
+                    <div class="city-detail">
+                        <i class='bx bx-time'></i>
+                        <span>{{ city.work_hours }}</span>
+                    </div>
+                </div>
+                <div class="city-actions">
+                    <button class="btn-city-action" onclick="event.stopPropagation(); callNumber('{{ city.phone }}')">
+                        <i class='bx bx-phone-call'></i>
+                        Позвонить
+                    </button>
+                    <button class="btn-city-action" onclick="event.stopPropagation(); openMap('{{ city.map_link }}')">
+                        <i class='bx bx-map'></i>
+                        Карта
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+
+<style>
+.cities-page {
+    padding-bottom: 20px;
+}
+
+/* Поиск */
+.city-search {
+    margin-bottom: 24px;
+}
+
+.search-container {
+    position: relative;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.search-container i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 18px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 14px 16px 14px 48px;
+    background: #1e3a8a;
+    border: 1px solid #3730a3;
+    border-radius: 12px;
+    color: #ffffff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+}
+
+.search-input::placeholder {
+    color: #94a3b8;
+}
+
+/* Список городов */
+.cities-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+.city-card {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    border-radius: 20px;
+    padding: 20px;
+    border: 1px solid #3730a3;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+}
+
+.city-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(30, 58, 138, 0.5);
+    border-color: #60a5fa;
+}
+
+.city-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.city-icon {
+    width: 50px;
+    height: 50px;
+    background: rgba(96, 165, 250, 0.2);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #60a5fa;
+}
+
+.city-icon i {
+    font-size: 24px;
+    color: #60a5fa;
+}
+
+.city-info {
+    flex: 1;
+}
+
+.city-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #f8fafc;
+    margin-bottom: 4px;
+}
+
+.city-manager {
+    font-size: 14px;
+    color: #bfdbfe;
+}
+
+.city-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.city-detail {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #c7d2fe;
+}
+
+.city-detail i {
+    font-size: 16px;
+    color: #60a5fa;
+}
+
+.city-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-city-action {
+    flex: 1;
+    background: rgba(96, 165, 250, 0.2);
+    border: 1px solid #60a5fa;
+    color: #bfdbfe;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn-city-action:hover {
+    background: rgba(96, 165, 250, 0.3);
+    transform: translateY(-1px);
+}
+
+@media (min-width: 768px) {
+    .cities-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .city-actions {
+        flex-direction: row;
+    }
+}
+
+@media (min-width: 1024px) {
+    .cities-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+</style>
+
+<script>
+// Поиск городов
+document.getElementById('citySearch').addEventListener('input', function(e) {
+    const query = e.target.value.toLowerCase().trim();
+    const cityCards = document.querySelectorAll('.city-card');
+
+    cityCards.forEach(card => {
+        const cityName = card.querySelector('.city-name').textContent.toLowerCase();
+        const cityManager = card.querySelector('.city-manager').textContent.toLowerCase();
+
+        if (cityName.includes(query) || cityManager.includes(query)) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+});
+
+// Функции для действий
+function callNumber(phone) {
+    if (typeof Telegram !== 'undefined') {
+        const tg = window.Telegram.WebApp;
+        tg.openTelegramLink(`tel:${phone}`);
+    } else {
+        window.open(`tel:${phone}`, '_blank');
+    }
+}
+
+function openMap(mapLink) {
+    if (typeof Telegram !== 'undefined') {
+        const tg = window.Telegram.WebApp;
+        tg.openTelegramLink(mapLink);
+    } else {
+        window.open(mapLink, '_blank');
+    }
+}
+
+function setCurrentCity(cityName) {
+    saveCity(cityName);
+    showTelegramAlert(`Город изменен на: ${cityName}`);
+}
+</script>
+{% endblock %}

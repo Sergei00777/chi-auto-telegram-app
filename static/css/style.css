@@ -1,0 +1,447 @@
+/* Базовые стили */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: #0a1128;
+    color: #ffffff;
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+}
+
+.app-container {
+    max-width: 100%;
+    min-height: 100vh;
+    padding-bottom: 70px; /* Для нижней навигации */
+}
+
+/* Верхняя навигация */
+.top-nav {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #3730a3;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-brand {
+    font-size: 18px;
+    font-weight: 700;
+    color: #f8fafc;
+}
+
+.brand-text {
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.nav-location {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: rgba(30, 64, 175, 0.6);
+    border-radius: 12px;
+    border: 1px solid #60a5fa;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.nav-location:hover {
+    background: rgba(30, 64, 175, 0.8);
+    transform: translateY(-1px);
+}
+
+.nav-location i {
+    font-size: 16px;
+    color: #bfdbfe;
+}
+
+/* Основной контент */
+.main-content {
+    padding: 16px;
+}
+
+/* Заголовки */
+.home-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px 0;
+}
+
+.main-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: #f1f5f9;
+    text-shadow: 0 2px 10px rgba(59, 130, 246, 0.3);
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.subtitle {
+    font-size: 16px;
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #f8fafc;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Быстрые действия */
+.quick-actions {
+    margin-bottom: 30px;
+}
+
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.action-card {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #3730a3;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+}
+
+.action-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(30, 58, 138, 0.5);
+    border-color: #60a5fa;
+}
+
+.action-icon {
+    width: 50px;
+    height: 50px;
+    background: rgba(96, 165, 250, 0.2);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    border: 1px solid #60a5fa;
+}
+
+.action-icon i {
+    font-size: 24px;
+    color: #60a5fa;
+}
+
+.action-card span {
+    font-size: 14px;
+    font-weight: 600;
+    color: #e2e8f0;
+}
+
+/* Карточки автомобилей */
+.cars-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.car-card {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid #3730a3;
+    box-shadow: 0 8px 25px rgba(30, 58, 138, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.car-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(30, 58, 138, 0.5);
+    border-color: #60a5fa;
+}
+
+.car-image {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+}
+
+.car-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.car-card:hover .car-image img {
+    transform: scale(1.05);
+}
+
+.car-info {
+    padding: 16px;
+}
+
+.car-info h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #f8fafc;
+    margin-bottom: 4px;
+}
+
+.car-year {
+    font-size: 14px;
+    color: #bfdbfe;
+    margin-bottom: 8px;
+}
+
+.car-specs {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 12px;
+}
+
+.spec {
+    font-size: 13px;
+    color: #c7d2fe;
+    background: rgba(30, 64, 175, 0.6);
+    padding: 4px 8px;
+    border-radius: 8px;
+    border: 1px solid #60a5fa;
+    align-self: flex-start;
+}
+
+.car-price {
+    font-size: 20px;
+    font-weight: 700;
+    color: #86efac;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.car-availability {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 10px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+}
+
+.available {
+    background: rgba(34, 197, 94, 0.2);
+    color: #bbf7d0;
+    border: 1px solid rgba(74, 222, 128, 0.4);
+}
+
+.unavailable {
+    background: rgba(239, 68, 68, 0.2);
+    color: #fecaca;
+    border: 1px solid rgba(248, 113, 113, 0.4);
+}
+
+/* Кнопка "Смотреть все" */
+.view-all-container {
+    text-align: center;
+}
+
+.btn-view-all {
+    background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn-view-all:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.5);
+}
+
+/* Ценовые диапазоны */
+.price-ranges {
+    margin-bottom: 30px;
+}
+
+.ranges-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.range-card {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #3730a3;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+}
+
+.range-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(30, 58, 138, 0.5);
+    border-color: #60a5fa;
+}
+
+.range-price {
+    font-size: 16px;
+    font-weight: 700;
+    color: #f8fafc;
+    margin-bottom: 8px;
+}
+
+.range-count {
+    font-size: 14px;
+    color: #bfdbfe;
+    background: rgba(30, 64, 175, 0.6);
+    padding: 4px 8px;
+    border-radius: 8px;
+    border: 1px solid #60a5fa;
+    display: inline-block;
+}
+
+/* Нижняя навигация */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    display: flex;
+    justify-content: space-around;
+    padding: 12px 8px;
+    border-top: 1px solid #3730a3;
+    backdrop-filter: blur(10px);
+    z-index: 100;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 60px;
+}
+
+.nav-item:hover {
+    background: rgba(96, 165, 250, 0.2);
+}
+
+.nav-item.active {
+    background: rgba(96, 165, 250, 0.3);
+    border: 1px solid #60a5fa;
+}
+
+.nav-item i {
+    font-size: 20px;
+    color: #bfdbfe;
+}
+
+.nav-item span {
+    font-size: 11px;
+    color: #c7d2fe;
+    font-weight: 500;
+}
+
+/* Адаптивность */
+@media (min-width: 768px) {
+    .cars-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .action-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .ranges-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .cars-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .ranges-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+/* Кастомный скроллбар */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1e3a8a;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #3b82f6, #1e40af);
+    border-radius: 3px;
+    border: 1px solid #60a5fa;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #60a5fa, #3b82f6);
+}
+
+/* Анимации */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.car-card, .action-card, .range-card {
+    animation: slideUp 0.5s ease-out both;
+}
+
+.car-card:nth-child(1) { animation-delay: 0.1s; }
+.car-card:nth-child(2) { animation-delay: 0.2s; }
+.car-card:nth-child(3) { animation-delay: 0.3s; }
+.car-card:nth-child(4) { animation-delay: 0.4s; }
+.car-card:nth-child(5) { animation-delay: 0.5s; }
+.car-card:nth-child(6) { animation-delay: 0.6s; }

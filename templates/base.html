@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CHI AUTO - Прокат авто{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Верхняя панель навигации -->
+        <nav class="top-nav">
+            <div class="nav-brand">
+                <span class="brand-text">CHI AUTO</span>
+            </div>
+            <div class="nav-location" onclick="openPage('/cities')">
+                <i class='bx bx-map'></i>
+                <span id="currentCity">Иркутск</span>
+            </div>
+        </nav>
+
+        <!-- Основной контент -->
+        <main class="main-content">
+            {% block content %}{% endblock %}
+        </main>
+
+        <!-- Нижняя навигация -->
+        <nav class="bottom-nav">
+            <div class="nav-item" onclick="openPage('/')">
+                <i class='bx bx-home'></i>
+                <span>Главная</span>
+            </div>
+            <div class="nav-item" onclick="openPage('/catalog')">
+                <i class='bx bx-car'></i>
+                <span>Каталог</span>
+            </div>
+            <div class="nav-item" onclick="openPage('/cities')">
+                <i class='bx bx-map-alt'></i>
+                <span>Города</span>
+            </div>
+            <div class="nav-item" onclick="openPage('/service')">
+                <i class='bx bx-wrench'></i>
+                <span>Сервис</span>
+            </div>
+            <div class="nav-item" onclick="openPage('/contacts')">
+                <i class='bx bx-phone'></i>
+                <span>Контакты</span>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Модальные окна -->
+    <div id="modalContainer"></div>
+
+    <!-- Скрипты -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/telegram.js') }}"></script>
+
+    {% block scripts %}{% endblock %}
+
+    <script>
+        // Базовая функция навигации
+        function openPage(url) {
+            window.location.href = url;
+        }
+
+        // Инициализация Telegram Web App
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof Telegram !== 'undefined') {
+                initTelegramApp();
+            }
+        });
+    </script>
+</body>
+</html>

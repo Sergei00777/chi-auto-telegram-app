@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="home-page">
+    <!-- Заголовок -->
+    <header class="home-header">
+        <h1 class="main-title">CHI AUTO</h1>
+        <p class="subtitle">Прокат премиальных автомобилей</p>
+    </header>
+
+    <!-- Быстрые действия -->
+    <section class="quick-actions">
+        <div class="action-grid">
+            <div class="action-card" onclick="openPage('/catalog')">
+                <div class="action-icon">
+                    <i class='bx bx-search-alt'></i>
+                </div>
+                <span>Найти авто</span>
+            </div>
+            <div class="action-card" onclick="openPage('/catalog/range/2-3')">
+                <div class="action-icon">
+                    <i class='bx bx-trending-up'></i>
+                </div>
+                <span>Популярные</span>
+            </div>
+            <div class="action-card" onclick="openPage('/service')">
+                <div class="action-icon">
+                    <i class='bx bx-calendar-check'></i>
+                </div>
+                <span>Запись на сервис</span>
+            </div>
+            <div class="action-card" onclick="openPage('/cities')">
+                <div class="action-icon">
+                    <i class='bx bx-current-location'></i>
+                </div>
+                <span>Наши филиалы</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Популярные автомобили -->
+    <section class="featured-cars">
+        <h2 class="section-title">Популярные автомобили</h2>
+        <div class="cars-grid">
+            {% for car in featured_cars %}
+            <div class="car-card" onclick="openPage('/car/{{ car.id }}')">
+                <div class="car-image">
+                    <img src="{{ url_for('static', filename='images/cars/' + car.images[0]) }}" alt="{{ car.name }}">
+                </div>
+                <div class="car-info">
+                    <h3>{{ car.name }}</h3>
+                    <p class="car-year">{{ car.year }} г.</p>
+                    <div class="car-specs">
+                        <span class="spec">{{ car.engine }}</span>
+                        <span class="spec">{{ car.transmission }}</span>
+                    </div>
+                    <div class="car-price">
+                        {{ "{:,}".format(car.price).replace(",", " ") }} ₽
+                    </div>
+                </div>
+                <div class="car-availability available">
+                    В наличии
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="view-all-container">
+            <button class="btn-view-all" onclick="openPage('/catalog')">
+                Смотреть все автомобили
+            </button>
+        </div>
+    </section>
+
+    <!-- Ценовые диапазоны -->
+    <section class="price-ranges">
+        <h2 class="section-title">Подбор по цене</h2>
+        <div class="ranges-grid">
+            <div class="range-card" onclick="openPage('/catalog/range/0-2')">
+                <div class="range-price">до 2 млн ₽</div>
+                <div class="range-count">12 авто</div>
+            </div>
+            <div class="range-card" onclick="openPage('/catalog/range/2-3')">
+                <div class="range-price">2-3 млн ₽</div>
+                <div class="range-count">8 авто</div>
+            </div>
+            <div class="range-card" onclick="openPage('/catalog/range/3-5')">
+                <div class="range-price">3-5 млн ₽</div>
+                <div class="range-count">6 авто</div>
+            </div>
+            <div class="range-card" onclick="openPage('/catalog/range/5-10')">
+                <div class="range-price">5-10 млн ₽</div>
+                <div class="range-count">4 авто</div>
+            </div>
+            <div class="range-card" onclick="openPage('/catalog/range/10-plus')">
+                <div class="range-price">от 10 млн ₽</div>
+                <div class="range-count">2 авто</div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

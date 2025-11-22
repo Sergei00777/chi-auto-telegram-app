@@ -1,0 +1,83 @@
+{
+  "irkutsk": {
+    "name": "Иркутск",
+    "address": "г. Иркутск, ул. Ленина, 123",
+    "phone": "+7 (3952) 12-34-56",
+    "email": "irkutsk@chiauto.ru",
+    "work_hours": "Пн-Пт: 9:00-19:00, Сб-Вс: 10:00-18:00",
+    "manager": "Иван Петров",
+    "map_link": "https://yandex.ru/maps/org/chiauto/123456789"
+  },
+  "moscow": {
+    "name": "Москва",
+    "address": "г. Москва, Ленинградский проспект, 45",
+    "phone": "+7 (495) 123-45-67",
+    "email": "moscow@chiauto.ru",
+    "work_hours": "Пн-Пт: 8:00-20:00, Сб-Вс: 9:00-19:00",
+    "manager": "Мария Сидорова",
+    "map_link": "https://yandex.ru/maps/org/chiauto/987654321"
+  },
+  "barnaul": {
+    "name": "Барнаул",
+    "address": "г. Барнаул, пр. Ленина, 78",
+    "phone": "+7 (3852) 34-56-78",
+    "email": "barnaul@chiauto.ru",
+    "work_hours": "Пн-Пт: 9:00-18:00, Сб: 10:00-17:00, Вс: выходной",
+    "manager": "Алексей Козлов",
+    "map_link": "https://yandex.ru/maps/org/chiauto/456789123"
+  },
+  "abakan": {
+    "name": "Абакан",
+    "address": "г. Абакан, ул. Пушкина, 45",
+    "phone": "+7 (3902) 56-78-90",
+    "email": "abakan@chiauto.ru",
+    "work_hours": "Пн-Пт: 9:00-18:00, Сб: 10:00-16:00, Вс: выходной",
+    "manager": "Ольга Николаева",
+    "map_link": "https://yandex.ru/maps/org/chiauto/789123456"
+  },
+  "ulan-ude": {
+    "name": "Улан-Удэ",
+    "address": "г. Улан-Удэ, ул. Терешковой, 23",
+    "phone": "+7 (3012) 78-90-12",
+    "email": "ulanude@chiauto.ru",
+    "work_hours": "Пн-Пт: 9:00-18:00, Сб: 10:00-17:00, Вс: выходной",
+    "manager": "Дмитрий Васильев",
+    "map_link": "https://yandex.ru/maps/org/chiauto/321654987"
+  },
+  "sochi": {
+    "name": "Сочи",
+    "address": "г. Сочи, ул. Навагинская, 7",
+    "phone": "+7 (862) 234-56-78",
+    "email": "sochi@chiauto.ru",
+    "work_hours": "Пн-Пт: 9:00-19:00, Сб-Вс: 10:00-18:00",
+    "manager": "Анна Смирнова",
+    "map_link": "https://yandex.ru/maps/org/chiauto/654987321"
+  },
+  "krasnoyarsk": {
+    "name": "Красноярск",
+    "address": "г. Красноярск, ул. 9 Мая, 45",
+    "phone": "+7 (391) 234-56-78",
+    "email": "krasnoyarsk@chiauto.ru",
+    "work_hours": "Пн-Пт: 9:00-19:00, Сб: 10:00-17:00, Вс: выходной",
+    "manager": "Сергей Иванов",
+    "map_link": "https://yandex.ru/maps/org/chiauto/987321654"
+  },
+  "ekaterinburg": {
+    "name": "Екатеринбург",
+    "address": "г. Екатеринбург, ул. Луначарского, 81",
+    "phone": "+7 (343) 345-67-89",
+    "email": "ekaterinburg@chiauto.ru",
+    "work_hours": "Пн-Пт: 8:00-20:00, Сб-Вс: 9:00-18:00",
+    "manager": "Елена Кузнецова",
+    "map_link": "https://yandex.ru/maps/org/chiauto/159753486"
+  },
+  "novosibirsk": {
+    "name": "Новосибирск",
+    "address": "г. Новосибирск, ул. Кирова, 48",
+    "phone": "+7 (383) 456-78-90",
+    "email": "novosibirsk@chiauto.ru",
+    "work_hours": "Пн-Пт: 9:00-19:00, Сб-Вс: 10:00-17:00",
+    "manager": "Павел Орлов",
+    "map_link": "https://yandex.ru/maps/org/chiauto/753159486"
+  }
+}

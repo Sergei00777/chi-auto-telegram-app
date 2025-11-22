@@ -1,0 +1,72 @@
+chi-auto-telegram-app/
+├── app.py                          # Основное приложение Flask
+├── config.py                       # Конфигурация приложения
+├── requirements.txt                # Зависимости
+├── bot.py                         # Telegram Bot (опционально)
+├── webapp/
+│   ├── __init__.py
+│   ├── routes.py                  # Все маршруты приложения
+│   ├── models.py                  # Модели данных
+│   └── utils.py                   # Вспомогательные функции
+├── templates/
+│   ├── base.html                  # Базовый шаблон
+│   ├── index.html                 # Главная страница
+│   ├── catalog/
+│   │   ├── catalog.html           # Каталог авто
+│   │   ├── price_ranges/
+│   │   │   ├── range_0_2m.html    # До 2 млн
+│   │   │   ├── range_2_3m.html    # 2-3 млн
+│   │   │   ├── range_3_5m.html    # 3-5 млн
+│   │   │   ├── range_5_10m.html   # 5-10 млн
+│   │   │   └── range_10m_plus.html # 10+ млн
+│   │   └── car_detail.html        # Детальная страница авто
+│   ├── cities/
+│   │   ├── cities_list.html       # Список городов
+│   │   ├── irkutsk.html           # Иркутск
+│   │   ├── moscow.html            # Москва
+│   │   ├── barnaul.html           # Барнаул
+│   │   ├── abakan.html            # Абакан
+│   │   ├── ulan-ude.html          # Улан-Удэ
+│   │   ├── sochi.html             # Сочи
+│   │   ├── krasnoyarsk.html       # Красноярск
+│   │   ├── ekaterinburg.html      # Екатеринбург
+│   │   └── novosibirsk.html       # Новосибирск
+│   ├── service/
+│   │   ├── service_main.html      # Главная страница сервиса
+│   │   ├── service_booking.html   # Запись на сервис
+│   │   └── service_status.html    # Статус заявки
+│   ├── contacts.html              # Контакты
+│   ├── about.html                 # О компании
+│   └── modals/
+│       ├── rent_modal.html        # Модалка аренды
+│       ├── contact_modal.html     # Модалка связи
+│       └── success_modal.html     # Модалка успеха
+├── static/
+│   ├── css/
+│   │   ├── style.css              # Основные стили
+│   │   ├── catalog.css            # Стили каталога
+│   │   ├── cities.css             # Стили городов
+│   │   ├── service.css            # Стили сервиса
+│   │   └── responsive.css         # Адаптивные стили
+│   ├── js/
+│   │   ├── main.js                # Основной JS
+│   │   ├── catalog.js             # Логика каталога
+│   │   ├── cities.js              # Логика городов
+│   │   ├── service.js             # Логика сервиса
+│   │   └── telegram.js            # Интеграция с Telegram
+│   ├── images/
+│   │   ├── cars/                  # Изображения автомобилей
+│   │   │   ├── geely_monjaro.jpg
+│   │   │   ├── lynk_co.jpg
+│   │   │   ├── mitsubishi_l200.jpg
+│   │   │   └── ... (все авто)
+│   │   ├── cities/                # Фото городов/филиалов
+│   │   ├── logos/                 # Логотипы
+│   │   └── icons/                 # Иконки
+│   └── data/
+│       ├── cities.json            # Данные по городам
+│       ├── cars.json              # Данные по автомобилям
+│       └── service.json           # Услуги сервиса
+└── database/
+    ├── init_db.py                 # Инициализация БД
+    └── models.py                  # Модели базы данных
