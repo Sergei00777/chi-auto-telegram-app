@@ -22,7 +22,7 @@ def index():
     cities = load_cities_data()
     cars = load_cars_data()
     # Берем первые 6 авто для показа на главной
-    featured_cars = list(cars.values())[:6]
+    featured_cars = dict(list(cars.items())[:6])
     return render_template('index.html', cities=cities, featured_cars=featured_cars)
 
 
@@ -140,6 +140,11 @@ def api_cars_filter():
 
     return jsonify(filtered_cars)
 
+# Страница Toyota Land Cruiser 200
+@app.route('/car/toyota_land_cruiser_200')
+def toyota_land_cruiser_200():
+    cities = load_cities_data()
+    return render_template('catalog/cars/toyota_land_cruiser_200.html', cities=cities)
 
 if __name__ == '__main__':
     # Создаем необходимые директории
